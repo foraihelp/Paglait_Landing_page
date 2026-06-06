@@ -1,0 +1,22 @@
+# Node / Next
+node_modules/
+.next/
+out/
+.vercel/
+
+# Env
+.env*
+!.env.example
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Project-internal (not for repo)
+uploads/
+.thumbnail

@@ -1,0 +1,432 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --accent: #ff7a00;
+  --accent-2: #ffc857;
+  --cyan:   #00d1ff;
+  --glow:   1;
+  --grain:  0.05;
+}
+
+html, body { background: #050505; }
+
+/* ─────────  Page-wide film grain  ───────── */
+body::before {
+  content: "";
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  opacity: var(--grain);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.95'/></svg>");
+  mix-blend-mode: overlay;
+}
+
+@layer components {
+  /* ─────────  Buttons  ───────── */
+  .btn {
+    @apply inline-flex items-center gap-2.5 px-5 py-3 font-mono text-[11px] tracking-[0.18em] uppercase border transition-all duration-200 rounded-sm;
+    border-color: var(--accent);
+    color: var(--accent);
+    background: transparent;
+  }
+  .btn:hover {
+    background: var(--accent);
+    color: #0a0604;
+    box-shadow: 0 0 24px rgba(255,122,0, calc(0.45 * var(--glow)));
+  }
+  .btn-solid {
+    @apply text-[#110700];
+    background: var(--accent);
+    box-shadow: 0 0 24px rgba(255,122,0, calc(0.35 * var(--glow)));
+  }
+  .btn-solid:hover {
+    background: var(--accent-2);
+    border-color: var(--accent-2);
+  }
+  .btn-ghost {
+    @apply text-ink-2;
+    border-color: #2a2a2a;
+  }
+  .btn-ghost:hover {
+    @apply text-ink;
+    background: transparent;
+    border-color: #c8c8c8;
+    box-shadow: none;
+  }
+  .btn-small { @apply px-4 py-2.5 text-[10px]; }
+  .btn .arr  { display: inline-block; transition: transform .2s; }
+  .btn:hover .arr { transform: translateX(4px); }
+
+  /* ─────────  Section header pattern  ───────── */
+  .shead-tag {
+    @apply inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.28em] uppercase;
+    color: var(--accent);
+  }
+  .shead-tag::before {
+    content: "";
+    display: inline-block;
+    width: 10px; height: 10px;
+    border: 1px solid var(--accent);
+    border-right: 0; border-bottom: 0;
+  }
+
+  /* ─────────  Corner brackets  ───────── */
+  .corner { @apply absolute w-3.5 h-3.5; border-color: #2a2a2a; }
+  .corner.tl { @apply top-0 left-0;     border-top: 1px solid; border-left: 1px solid; }
+  .corner.tr { @apply top-0 right-0;    border-top: 1px solid; border-right: 1px solid; }
+  .corner.bl { @apply bottom-0 left-0;  border-bottom: 1px solid; border-left: 1px solid; }
+  .corner.br { @apply bottom-0 right-0; border-bottom: 1px solid; border-right: 1px solid; }
+}
+
+/* ─────────  Hero portal (CSS scene)  ───────── */
+.hero-bg {
+  background:
+    radial-gradient(ellipse at 75% 40%, rgba(255,122,0, calc(0.18 * var(--glow))) 0%, transparent 45%),
+    radial-gradient(ellipse at 30% 80%, rgba(40, 20, 8, 0.5) 0%, transparent 50%),
+    linear-gradient(180deg, #08070a 0%, #0a0805 50%, #050403 100%);
+}
+.hero-stars {
+  background-image:
+    radial-gradient(1px 1px at 8% 12%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 14% 78%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1.5px 1.5px at 22% 30%, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 36% 15%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 48% 64%, rgba(255,200,87,0.7), transparent),
+    radial-gradient(1px 1px at 62% 22%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(2px 2px at 71% 9%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 84% 52%, rgba(0,209,255,0.5), transparent),
+    radial-gradient(1px 1px at 92% 28%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 56% 88%, rgba(255,255,255,0.4), transparent);
+  opacity: 0.7;
+}
+.portal-ring {
+  border: 2px solid rgba(255, 140, 50, 0.85);
+  box-shadow:
+    0 0 40px rgba(255,122,0, calc(0.7 * var(--glow))),
+    0 0 120px rgba(255,122,0, calc(0.45 * var(--glow))),
+    inset 0 0 60px rgba(255,122,0, calc(0.25 * var(--glow)));
+}
+.portal-ring::before {
+  content: ""; position: absolute; inset: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 200, 87, 0.4);
+  filter: blur(1px);
+}
+.portal-core {
+  background:
+    radial-gradient(circle at 50% 60%, rgba(255,160,80,0.35) 0%, rgba(30,15,5,0.6) 50%, rgba(5,3,2,0.9) 100%);
+  filter: blur(2px);
+}
+.portal-sparks {
+  background-image:
+    radial-gradient(2px 2px at 8% 50%, rgba(255,200,87,1), transparent),
+    radial-gradient(1.5px 1.5px at 92% 50%, rgba(255,200,87,1), transparent),
+    radial-gradient(1.5px 1.5px at 50% 4%, rgba(255,220,140,0.8), transparent),
+    radial-gradient(1px 1px at 50% 96%, rgba(255,200,87,0.7), transparent),
+    radial-gradient(1px 1px at 20% 18%, rgba(255,220,140,0.9), transparent),
+    radial-gradient(1px 1px at 78% 82%, rgba(255,220,140,0.7), transparent);
+}
+.figure {
+  background: linear-gradient(180deg, rgba(20,15,12,1) 0%, rgba(8,6,4,1) 70%, rgba(0,0,0,0) 100%);
+  filter: drop-shadow(0 0 24px rgba(255,122,0,0.5));
+}
+.figure::before {
+  content: ""; position: absolute;
+  top: -10px; left: 50%; transform: translateX(-50%);
+  width: 26px; height: 30px; border-radius: 50% 50% 40% 40%;
+  background: #18120e;
+  box-shadow: inset -3px -2px 0 rgba(255,160,80,0.2);
+}
+.hero-mist {
+  background: linear-gradient(180deg, transparent 0%, rgba(255,122,0,0.05) 30%, rgba(10,5,2,0.95) 100%);
+}
+
+/* ─────────  Side counter line  ───────── */
+.hero-counter::before {
+  content: "";
+  position: absolute;
+  left: 6px; top: -40px; bottom: -40px;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, #2a2a2a 40%, #2a2a2a 60%, transparent);
+}
+
+/* ─────────  Particles  ───────── */
+.particle {
+  position: absolute;
+  background: rgba(255,180,120,0.85);
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(255,180,120,0.8);
+  animation: float linear infinite;
+}
+.particle:nth-child(odd)  { background: rgba(0,209,255,0.7); box-shadow: 0 0 6px rgba(0,209,255,0.7); }
+.particle:nth-child(3n)   { background: rgba(255,200,87,0.9); box-shadow: 0 0 8px rgba(255,200,87,0.9); }
+
+/* ─────────  Player chrome  ───────── */
+.player-iframe {
+  position: absolute; inset: -1px;
+  width: calc(100% + 2px); height: calc(100% + 2px);
+  transform: scale(1.32);
+  transform-origin: center;
+  pointer-events: none;
+  border: 0;
+}
+.player-shade {
+  background:
+    radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(0,0,0,0.55) 100%),
+    linear-gradient(180deg, rgba(0,0,0,0.2) 0%, transparent 30%, rgba(0,0,0,0.65) 100%);
+}
+.player-bar {
+  position: relative; height: 2px; background: rgba(255,255,255,0.15);
+}
+.player-bar::after {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 32%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+.player-bar::before {
+  content: ""; position: absolute; left: 32%; top: 50%; transform: translate(-50%,-50%);
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+/* ─────────  Studio scene  ───────── */
+.studio {
+  background:
+    linear-gradient(180deg, rgba(8,8,15,0.95) 0%, rgba(8,8,15,0.7) 30%, rgba(40,25,15,0.5) 70%, rgba(8,5,3,1) 100%);
+}
+.studio::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 20%; bottom: 30%;
+  background-image:
+    radial-gradient(2px 8px  at 4% 80%,  rgba(255,220,140,0.9), transparent),
+    radial-gradient(2px 14px at 9% 60%,  rgba(255,180,80,0.7),  transparent),
+    radial-gradient(2px 20px at 16% 40%, rgba(0,209,255,0.4),   transparent),
+    radial-gradient(2px 10px at 22% 70%, rgba(255,220,140,0.6), transparent),
+    radial-gradient(2px 22px at 29% 30%, rgba(0,209,255,0.5),   transparent),
+    radial-gradient(2px 14px at 36% 60%, rgba(255,180,80,0.7),  transparent),
+    radial-gradient(2px 10px at 45% 75%, rgba(255,220,140,0.6), transparent),
+    radial-gradient(2px 18px at 54% 45%, rgba(0,209,255,0.4),   transparent),
+    radial-gradient(2px 14px at 64% 60%, rgba(255,180,80,0.7),  transparent),
+    radial-gradient(2px 22px at 72% 35%, rgba(255,220,140,0.8), transparent),
+    radial-gradient(2px 10px at 81% 70%, rgba(0,209,255,0.4),   transparent),
+    radial-gradient(2px 16px at 89% 50%, rgba(255,180,80,0.7),  transparent),
+    radial-gradient(2px 12px at 96% 65%, rgba(255,220,140,0.6), transparent);
+  filter: blur(1px);
+}
+.studio-mon {
+  background: linear-gradient(180deg, rgba(0,209,255,0.18) 0%, rgba(40,80,120,0.35) 60%, rgba(15,30,50,0.6) 100%);
+  border: 1px solid rgba(0,209,255,0.18);
+  position: relative;
+  box-shadow: 0 -10px 30px rgba(0,209,255, calc(0.15 * var(--glow))), inset 0 0 30px rgba(0,0,0,0.5);
+}
+.studio-mon::before {
+  content: ""; position: absolute; left: 6px; top: 6px; right: 6px; bottom: 30%;
+  background:
+    linear-gradient(180deg, rgba(0,209,255,0.1), transparent),
+    repeating-linear-gradient(0deg, rgba(0,209,255,0.06) 0 1px, transparent 1px 6px);
+}
+.studio-mon::after {
+  content: ""; position: absolute; left: 6px; right: 6px; bottom: 6px;
+  height: 28%;
+  background: linear-gradient(180deg, rgba(255,122,0,0.2), rgba(255,122,0,0.05));
+}
+
+/* ─────────  Project scenes  ───────── */
+.scene-castle {
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(60,40,30,0.5), transparent 70%),
+    radial-gradient(ellipse at 50% 35%, rgba(120,90,70,0.18), transparent 60%),
+    linear-gradient(180deg, #1a1620 0%, #15121a 40%, #0a0808 100%);
+}
+.scene-castle::after {
+  content: ""; position: absolute; left: 30%; right: 25%; top: 35%; bottom: 8%;
+  background: linear-gradient(180deg, transparent 0%, rgba(8,6,8,0.6) 30%, rgba(0,0,0,0.95) 100%);
+  clip-path: polygon(0 100%, 5% 75%, 12% 70%, 15% 30%, 22% 35%, 25% 25%, 33% 28%, 35% 15%, 48% 18%, 50% 5%, 58% 12%, 62% 22%, 72% 25%, 78% 18%, 85% 30%, 88% 60%, 95% 65%, 100% 100%);
+}
+.scene-astronaut {
+  background:
+    radial-gradient(circle at 50% 40%, rgba(0,209,255, calc(0.5 * var(--glow))) 0%, rgba(40,80,140,0.3) 10%, transparent 30%),
+    radial-gradient(ellipse at 50% 60%, rgba(20,15,15,0.9) 0%, rgba(8,5,5,1) 70%);
+}
+.scene-astronaut::after {
+  content: ""; position: absolute; left: 35%; right: 35%; top: 30%; bottom: 0;
+  background: linear-gradient(180deg, rgba(25,20,18,0.5) 0%, rgba(8,6,5,1) 100%);
+  border-radius: 50% 50% 0 0;
+}
+.scene-figure {
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(80,60,40,0.4), transparent 60%),
+    linear-gradient(180deg, #1a1812 0%, #0f0c08 60%, #050403 100%);
+}
+.scene-figure::after {
+  content: ""; position: absolute; left: 40%; right: 40%; top: 30%; bottom: 0;
+  background: linear-gradient(180deg, rgba(20,15,12,0.95), rgba(0,0,0,1));
+}
+.scene-creature {
+  background:
+    radial-gradient(circle at 50% 45%, rgba(255,122,0, calc(0.4 * var(--glow))) 0%, rgba(120,40,15,0.3) 20%, transparent 45%),
+    linear-gradient(180deg, #1f0a05 0%, #0a0403 100%);
+}
+.scene-pipeline {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(0,209,255, calc(0.25 * var(--glow))) 0%, transparent 50%),
+    linear-gradient(180deg, #06121a 0%, #04080c 100%);
+}
+.scene-pipeline::before {
+  content: ""; position: absolute; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(0,209,255,0.9), transparent),
+    radial-gradient(1px 1px at 40% 50%, rgba(0,209,255,0.7), transparent),
+    radial-gradient(1px 1px at 70% 40%, rgba(0,209,255,0.9), transparent),
+    radial-gradient(1px 1px at 30% 70%, rgba(0,209,255,0.6), transparent),
+    radial-gradient(1px 1px at 65% 75%, rgba(0,209,255,0.8), transparent),
+    radial-gradient(1px 1px at 85% 60%, rgba(0,209,255,0.7), transparent);
+}
+.scene-pipeline::after {
+  content: ""; position: absolute; inset: 20% 15%;
+  background:
+    linear-gradient(45deg,  transparent 49%, rgba(0,209,255,0.18) 49.5%, rgba(0,209,255,0.18) 50.5%, transparent 51%),
+    linear-gradient(135deg, transparent 49%, rgba(0,209,255,0.12) 49.5%, rgba(0,209,255,0.12) 50.5%, transparent 51%);
+}
+
+/* ─────────  Pipeline timeline track  ───────── */
+.pipeline-track::before {
+  content: "";
+  position: absolute; left: 6%; right: 6%; top: 56px;
+  height: 1px;
+  background: linear-gradient(90deg,
+    rgba(0,209,255,0) 0%,
+    rgba(0,209,255,0.35) 8%,
+    rgba(0,209,255,0.35) 92%,
+    rgba(0,209,255,0) 100%);
+}
+.pipeline-track::after {
+  content: "";
+  position: absolute; left: 6%; top: 55px;
+  width: 12%; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(0,209,255,0.95), transparent);
+  filter: blur(1px);
+  box-shadow: 0 0 14px rgba(0,209,255, calc(0.9 * var(--glow)));
+  animation: flow 4.5s linear infinite;
+}
+.step-node {
+  background: radial-gradient(circle at 50% 50%, rgba(0,209,255,0.08), rgba(8,8,10,1) 70%);
+  border: 1px solid rgba(0,209,255,0.5);
+  box-shadow:
+    0 0 24px rgba(0,209,255, calc(0.5 * var(--glow))),
+    inset 0 0 18px rgba(0,209,255,0.15);
+}
+.step-node::after {
+  content: ""; position: absolute; inset: -8px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,209,255,0.18);
+  animation: pulsering 3s ease-out infinite;
+}
+
+/* ─────────  Product dashboards (glassmorphism)  ───────── */
+.product-card {
+  background: linear-gradient(180deg, rgba(20,20,20,0.55) 0%, rgba(12,12,12,0.5) 100%);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid rgba(255,255,255,0.07);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+}
+.product-card:hover {
+  border-color: rgba(255,122,0,0.5) !important;
+  box-shadow: 0 20px 60px rgba(255,122,0, calc(0.18 * var(--glow))), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.product-card::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+  z-index: 5;
+}
+
+.product-dash {
+  background: linear-gradient(135deg, rgba(8,12,20,0.95) 0%, rgba(15,22,40,0.95) 100%);
+}
+.product-dash::before {
+  content: ""; position: absolute; inset: 8px;
+  background-image:
+    repeating-linear-gradient(0deg,  rgba(0,209,255,0.04) 0 1px, transparent 1px 8px),
+    repeating-linear-gradient(90deg, rgba(0,209,255,0.04) 0 1px, transparent 1px 8px);
+}
+.dash-pvfx::after {
+  content: ""; position: absolute; left: 12px; right: 12px; bottom: 18px; height: 50%;
+  background:
+    linear-gradient(180deg, transparent 0%, rgba(255,122,0,0.15) 100%),
+    repeating-linear-gradient(90deg,
+      transparent 0 10px,
+      rgba(0,209,255,0.5) 10px 11px,
+      transparent 11px 24px,
+      rgba(255,122,0,0.7) 24px 25px);
+  clip-path: polygon(0 80%, 10% 60%, 20% 70%, 30% 40%, 40% 50%, 55% 25%, 70% 35%, 85% 20%, 100% 30%, 100% 100%, 0 100%);
+}
+.dash-shot::after {
+  content: ""; position: absolute; inset: 16px 12px 28px;
+  background:
+    radial-gradient(circle at 30% 50%, rgba(255,122,0,0.5), transparent 35%),
+    radial-gradient(circle at 65% 40%, rgba(0,209,255,0.4), transparent 35%);
+  filter: blur(2px);
+}
+.dash-asset::after {
+  content: ""; position: absolute; left: 30%; right: 30%; top: 16px; bottom: 16px;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(0,209,255,0.45), transparent 50%),
+    linear-gradient(180deg, rgba(0,209,255,0.2), rgba(20,30,45,0.5));
+  clip-path: polygon(35% 0%, 65% 0%, 75% 30%, 80% 100%, 20% 100%, 25% 30%);
+}
+.dash-review::after {
+  content: ""; position: absolute; left: 12px; right: 12px; top: 16px; bottom: 28px;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(0,209,255,0.5), transparent 30%),
+    linear-gradient(180deg, rgba(15,25,40,0.9), rgba(40,30,20,0.7));
+}
+.dash-render::after {
+  content: ""; position: absolute; left: 12px; right: 12px; bottom: 18px;
+  height: 55%;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,122,0,0.6) 0 2px, transparent 2px 14px),
+    linear-gradient(180deg, transparent, rgba(0,209,255,0.18));
+  clip-path: polygon(0 100%, 5% 50%, 10% 65%, 18% 30%, 25% 55%, 35% 35%, 45% 60%, 55% 25%, 65% 50%, 75% 30%, 85% 60%, 100% 40%, 100% 100%);
+}
+
+/* ─────────  Testimonial archway scene  ───────── */
+.testimonial {
+  background:
+    radial-gradient(ellipse at 60% 80%, rgba(255,122,0, calc(0.18 * var(--glow))), transparent 60%),
+    linear-gradient(180deg, #0e0a08 0%, #050403 100%);
+}
+.testimonial::after {
+  content: ""; position: absolute; left: 25%; right: 25%; top: 25%; bottom: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(255,122,0,0.15) 50%, rgba(0,0,0,0.95) 100%);
+  border-radius: 50% 50% 0 0 / 25% 25% 0 0;
+}
+
+/* ─────────  Service hover  ───────── */
+.service:hover .service-icon {
+  color: var(--accent) !important;
+  border-color: rgba(255,122,0,0.5) !important;
+  box-shadow: 0 0 18px rgba(255,122,0, calc(0.3 * var(--glow)));
+}
+
+/* ─────────  Join section bg  ───────── */
+.join-bg {
+  background:
+    radial-gradient(ellipse at 80% 50%, rgba(255,122,0, calc(0.12 * var(--glow))), transparent 50%),
+    linear-gradient(180deg, #050403 0%, #08060a 100%);
+}
+
+/* ─────────  Scroll arrow circle  ───────── */
+.scroll-arrow {
+  position: relative; width: 18px; height: 18px;
+  border: 1px solid #2a2a2a;
+  border-radius: 50%;
+}
+.scroll-arrow::before {
+  content: ""; position: absolute; left: 50%; top: 4px;
+  width: 4px; height: 4px;
+  border-right: 1px solid #c8c8c8; border-bottom: 1px solid #c8c8c8;
+  transform: translateX(-50%) rotate(45deg);
+}
